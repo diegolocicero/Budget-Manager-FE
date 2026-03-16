@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
 import "./Signup.css";
+import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -33,12 +34,8 @@ export default function Signup() {
 
   return (
     <div className="signup-container">
-      {/* Overlay di Caricamento Moderno */}
-      {loading && (
-        <div className="loading-overlay">
-          <div className="spinner-large"></div>
-        </div>
-      )}
+      
+      {loading && <LoadingSpinner />}
 
       <form className="signup-card" onSubmit={handleSignup}>
         <h2>Sign Up</h2>

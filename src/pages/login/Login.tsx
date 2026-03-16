@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
-import "./Login.css"; // Assicurati che contenga le classi .loading-overlay e .spinner-large
+import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
+import "./Login.css"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,12 +31,7 @@ export default function Login() {
 
   return (
     <div className="login-container">
-      {/* Overlay di Caricamento - Stesso stile della Signup */}
-      {loading && (
-        <div className="loading-overlay">
-          <div className="spinner-large"></div>
-        </div>
-      )}
+      {loading && <LoadingSpinner />}
 
       <form className="login-card" onSubmit={handleLogin}>
         <h2>Login</h2>
@@ -65,7 +61,7 @@ export default function Login() {
         </div>
 
         <button type="submit" disabled={loading}>
-          Login
+          {loading ? "Accedi..." : "Login"}
         </button>
 
         <p>
