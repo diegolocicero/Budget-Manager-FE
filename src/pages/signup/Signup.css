@@ -1,0 +1,99 @@
+/* Esempio per Login.css (applica le stesse modifiche a Signup.css) */
+
+.signup-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    overflow: hidden;
+    position: relative; /* Necessario per il posizionamento dei cerchi */
+    z-index: 1;
+}
+
+.signup-card {
+    position: relative;
+    z-index: 2; /* Porta la card sopra i cerchi */
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    /* Opzionale: aggiungi un leggero sfondo semi-trasparente per leggibilità */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    padding: 40px;
+    border-radius: 20px;
+}
+
+/* Il resto del tuo CSS rimane invariato */
+.signup-card h2 {
+    font-size: 40px;
+    color: white; /* Assicurati che il testo sia visibile sullo sfondo scuro */
+    font-weight: 500;
+}
+
+.input-group {
+    position: relative;
+    width: 80%;
+}
+
+.input-group input {
+    width: 100%;
+    height: 3rem;
+    font-size: 20px;
+    padding-left: 1rem;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.input-group label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    transition: all 0.2s ease;
+    background: white;
+    padding: 0 3px;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+button {
+    width: 120px;
+    height: 3rem;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: whitesmoke;
+    color: black;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    transition: transform 0.2s;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+p {
+    color: white;
+    font-weight: 100;
+}
+
+p .p-link {
+    color: var(--text); /* Colore che richiama i cerchi */
+    font-weight: bold;
+    text-decoration: none;
+}

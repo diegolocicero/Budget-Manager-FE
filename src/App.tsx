@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Login from "./pages/login/Login.tsx";
+import Signup from "./pages/signup/Signup.tsx";
+import Home from "./pages/home/Home.tsx";
+import BackgroundCircles from "./components/BackgroundCirclesComponent.tsx";
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  // Funzione che ritorna le posizioni dei 5 cerchi in base alla rotta
+  const getPositions = (path: string) => {
+    if (path === "/signup") {
+      return [
+        { x: "15vw", y: "10vh", size: 400 },
+        { x: "75vw", y: "90vh", size: 350 },
+        { x: "50vw", y: "20vh", size: 250 },
+        { x: "10vw", y: "80vh", size: 300 },
+        { x: "80vw", y: "15vh", size: 450 },
+      ];
+    }
+    if (path === "/") {
+      return [
+        { x: "5vw", y: "15vh", size: 400 },
+        { x: "65vw", y: "60vh", size: 350 },
+        { x: "30vw", y: "30vh", size: 250 },
+        { x: "20vw", y: "70vh", size: 300 },
+        { x: "70vw", y: "-20vh", size: 450 },
+      ];
+    }
+    return [
+      { x: "10vw", y: "20vh", size: 400 },
+      { x: "70vw", y: "50vh", size: 350 },
+      { x: "40vw", y: "40vh", size: 250 },
+      { x: "30vw", y: "80vh", size: 300 },
+      { x: "80vw", y: "10vh", size: 450 },
+    ];
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BackgroundCircles positions={getPositions(location.pathname)} />
+      <Routes location={location}>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Home />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <AnimatedRoutes />
+    </BrowserRouter>
+  );
+}
+
+export default App;
