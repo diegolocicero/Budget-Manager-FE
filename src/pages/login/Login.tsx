@@ -1,24 +1,77 @@
-import { Link } from "react-router-dom";
-import "./Login.css";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../../supabaseClient";
+import toast from "react-hot-toast";
+import "./Login.css"; // Assicurati che contenga le classi .loading-overlay e .spinner-large
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Bentornato!");
+      navigate("/dashboard");
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="login-container">
-      <div className="login-card">
+      {/* Overlay di Caricamento - Stesso stile della Signup */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner-large"></div>
+        </div>
+      )}
+
+      <form className="login-card" onSubmit={handleLogin}>
         <h2>Login</h2>
+        
         <div className="input-group">
-          <input type="text" id="email" placeholder=" " autoComplete="email" />
+          <input 
+            type="email" 
+            id="email" 
+            placeholder=" " 
+            autoComplete="email" 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
           <label htmlFor="email">Email</label>
         </div>
+
         <div className="input-group">
-          <input type="password" id="password" placeholder=" " autoComplete="current-password" />
+          <input 
+            type="password" 
+            id="password" 
+            placeholder=" " 
+            autoComplete="current-password" 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
           <label htmlFor="password">Password</label>
         </div>
-        <button>Login</button>
+
+        <button type="submit" disabled={loading}>
+          Login
+        </button>
+
         <p>
           Don't have an account? <Link to="/signup" className="p-link">Sign Up</Link>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

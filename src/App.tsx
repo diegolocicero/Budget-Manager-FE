@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { supabase } from "./supabaseClient.ts";
+import { Toaster } from "react-hot-toast";
 import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import Home from "./pages/home/Home.tsx";
@@ -43,6 +44,7 @@ function AnimatedRoutes() {
 
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
       <BackgroundCircles positions={getPositions(location.pathname)} />
       <Routes location={location}>
         <Route path="/" element={<Login />} />

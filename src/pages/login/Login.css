@@ -13,7 +13,7 @@
 
 .login-card {
     position: relative;
-    z-index: 2; /* Porta la card sopra i cerchi */
+    z-index: 2; 
     width: 100%;
     max-width: 500px;
     display: flex;
@@ -21,17 +21,15 @@
     align-items: center;
     justify-content: center;
     gap: 2.5rem;
-    /* Opzionale: aggiungi un leggero sfondo semi-trasparente per leggibilità */
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(5px);
     padding: 40px;
     border-radius: 20px;
 }
 
-/* Il resto del tuo CSS rimane invariato */
 .login-card h2{
     font-size: 40px;
-    color: white; /* Assicurati che il testo sia visibile sullo sfondo scuro */
+    color: white; 
     font-weight: 500;
 }
 
@@ -96,4 +94,32 @@ p .p-link {
     color: var(--text);
     font-weight: bold;
     text-decoration: none;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px); 
+}
+
+.spinner-large {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #007bff; 
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
