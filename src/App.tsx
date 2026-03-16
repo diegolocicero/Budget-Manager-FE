@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-
+import { supabase } from "./supabaseClient.ts";
 import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import Home from "./pages/home/Home.tsx";
@@ -11,6 +11,9 @@ function AnimatedRoutes() {
 
   // Funzione che ritorna le posizioni dei 5 cerchi in base alla rotta
   const getPositions = (path: string) => {
+    supabase.auth.getSession().then(({ data }) => {
+      console.log("Connessione Supabase attiva:", data);
+    });
     if (path === "/signup") {
       return [
         { x: "15vw", y: "10vh", size: 400 },
