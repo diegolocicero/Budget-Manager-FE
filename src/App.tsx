@@ -7,6 +7,7 @@ import Signup from "./pages/signup/Signup.tsx";
 import Home from "./pages/home/Home.tsx";
 import Header from "./components/header/header.tsx";
 import BackgroundCircles from "./components/BackgroundCirclesComponent.tsx";
+import Profile from "./pages/profile/Profile.tsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );

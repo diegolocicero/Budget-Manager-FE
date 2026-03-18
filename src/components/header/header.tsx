@@ -96,7 +96,13 @@ export default function Header() {
 
         {open && (
           <div className="header-dropdown">
-            <div className="dropdown-profile-row">
+            <div
+              className="dropdown-profile-row clickable"
+              onClick={() => {
+                navigate("/profile");
+                setOpen(false);
+              }} 
+            >
               <div className="dropdown-avatar-wrap">
                 {profile.avatarUrl ? (
                   <img
