@@ -10,7 +10,6 @@
   font-family: 'DM Sans', 'Segoe UI', sans-serif;
 }
 
-/* ─── Ambient orbs ─────────────────────────── */
 
 .orb {
   position: fixed;
@@ -56,7 +55,6 @@
   100% { transform: translate(30px, 20px) scale(1.08); }
 }
 
-/* ─── Inner layout ─────────────────────────── */
 
 .home-inner {
   position: relative;
@@ -68,7 +66,6 @@
   gap: 2.5rem;
 }
 
-/* ─── Header ───────────────────────────────── */
 
 .home-header {
   display: flex;
@@ -148,7 +145,6 @@
   color: #f87171;
 }
 
-/* ─── Summary Grid ─────────────────────────── */
 
 .summary-grid {
   display: grid;
@@ -176,7 +172,6 @@
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Glowing accent blob inside each card */
 .card-glow {
   position: absolute;
   width: 180px;
@@ -262,7 +257,6 @@
   letter-spacing: 0.04em;
 }
 
-/* Skeleton loader */
 .skeleton {
   display: inline-block;
   width: 140px;
@@ -283,7 +277,6 @@
   100% { background-position: -200% 0; }
 }
 
-/* ─── Actions Grid ─────────────────────────── */
 
 .actions-grid {
   display: grid;
@@ -310,7 +303,6 @@
   background: transparent;
 }
 
-/* Animated ring border */
 .btn-ring {
   position: absolute;
   inset: 0;
@@ -386,7 +378,6 @@
   color: rgba(201, 190, 255, 0.8);
 }
 
-/* ─── Modal ────────────────────────────────── */
 
 .modal-backdrop {
   position: fixed;
@@ -511,7 +502,6 @@
   box-shadow: 0 0 0 3px rgba(73, 57, 121, 0.15);
 }
 
-/* Rimuove le frecce dagli input number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -519,7 +509,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield; 
 }
 
 .modal-submit {
@@ -557,7 +547,6 @@ input[type="number"] {
   color: var(--text);
 }
 
-/* ─── Responsive ───────────────────────────── */
 
 @media (max-width: 560px) {
   .summary-grid,

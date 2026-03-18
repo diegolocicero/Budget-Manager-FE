@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
 import "./Home.css";
-
-interface Summary {
-  totEntrate: number;
-  totUscite: number;
-}
+import { useState, useEffect } from "react";
+import { DepositAPIService } from "../../services/DepositAPIService";
+import { WithdrawalAPIService } from "../../services/WithdrawalAPIService";
+import type { Summary } from "../../interface/ISummary";
 
 export default function Home() {
   const [summary, setSummary] = useState<Summary>({ totEntrate: 0, totUscite: 0 });
@@ -18,11 +16,9 @@ export default function Home() {
   const fetchSummary = async () => {
     setLoadingSummary(true);
     try {
-      const res = await fetch("/api/example/summary");
-      const data = await res.json();
+      const data = await DepositAPIService.getSummary();
       setSummary(data);
     } catch {
-      // Fallback mock data
       setSummary({ totEntrate: 3240.5, totUscite: 1870.2 });
     } finally {
       setLoadingSummary(false);
@@ -37,19 +33,13 @@ export default function Home() {
     if (!formDesc || !formAmount) return;
     setSubmitting(true);
     try {
-      await fetch("/api/example/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type,
-          description: formDesc,
-          amount: parseFloat(formAmount),
-          date: new Date().toISOString(),
-        }),
-      });
+      if (type === "entrata") {
+        await DepositAPIService.addDeposit(formDesc, parseFloat(formAmount));
+      } else {
+        await WithdrawalAPIService.addWithdrawal(formDesc, parseFloat(formAmount));
+      }
       await fetchSummary();
     } catch {
-      // Optimistic update
       setSummary((prev) => ({
         totEntrate:
           type === "entrata"
@@ -70,7 +60,6 @@ export default function Home() {
 
   const balance = summary.totEntrate - summary.totUscite;
   const month = new Date().toLocaleString("it-IT", { month: "long", year: "numeric" });
-
   const fmt = (n: number) =>
     n.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -96,7 +85,6 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Summary Cards */}
         <section className="summary-grid">
           <div className="summary-card card-entrate">
             <div className="card-glow glow-entrate" />
@@ -108,7 +96,9 @@ export default function Home() {
               {loadingSummary ? (
                 <span className="skeleton" />
               ) : (
-                <span className="amount-value">{fmt(summary.totEntrate)} <span className="amount-currency">€</span></span>
+                <span className="amount-value">
+                  {fmt(summary.totEntrate)} <span className="amount-currency">€</span>
+                </span>
               )}
             </div>
             <div className="card-sub">questo mese</div>
@@ -124,28 +114,23 @@ export default function Home() {
               {loadingSummary ? (
                 <span className="skeleton" />
               ) : (
-                <span className="amount-value">{fmt(summary.totUscite)} <span className="amount-currency">€</span></span>
+                <span className="amount-value">
+                  {fmt(summary.totUscite)} <span className="amount-currency">€</span>
+                </span>
               )}
             </div>
             <div className="card-sub">questo mese</div>
           </div>
         </section>
 
-        {/* Action Buttons */}
         <section className="actions-grid">
-          <button
-            className="action-btn btn-entrata"
-            onClick={() => setShowModal("entrata")}
-          >
+          <button className="action-btn btn-entrata" onClick={() => setShowModal("entrata")}>
             <div className="btn-ring" />
             <span className="btn-plus">+</span>
             <span className="btn-label">Aggiungi Entrata</span>
           </button>
 
-          <button
-            className="action-btn btn-uscita"
-            onClick={() => setShowModal("uscita")}
-          >
+          <button className="action-btn btn-uscita" onClick={() => setShowModal("uscita")}>
             <div className="btn-ring" />
             <span className="btn-plus">+</span>
             <span className="btn-label">Aggiungi Uscita</span>
@@ -153,7 +138,6 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div className="modal-backdrop" onClick={() => setShowModal(null)}>
           <div
