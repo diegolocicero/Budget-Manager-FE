@@ -17,10 +17,14 @@ export default function Home() {
   const fetchSummary = async () => {
     setLoadingSummary(true);
     try {
-      const data = await DepositAPIService.getSummary();
-      setSummary(data);
+      const [deposits, withdrawals] = await Promise.all([
+        DepositAPIService.getAll(),
+        WithdrawalAPIService.getAll(),
+      ]);
+      const totEntrate = deposits.reduce((acc, d) => acc + d.value, 0);
+      const totUscite = withdrawals.reduce((acc, w) => acc + w.value, 0);
+      setSummary({ totEntrate, totUscite });
     } catch {
-      setSummary({ totEntrate: 3240.5, totUscite: 1870.2 });
       toast.error("Impossibile caricare il riepilogo.");
     } finally {
       setLoadingSummary(false);
@@ -34,8 +38,7 @@ export default function Home() {
   const handleAdd = async (type: "entrata" | "uscita") => {
     if (!formDesc || !formAmount) return;
     setSubmitting(true);
-
-    const label = type === "entrata" ? "entrata" : "uscita";
+    const label = type === "entrata" ? "Entrata" : "Uscita";
 
     try {
       if (type === "entrata") {
@@ -43,21 +46,10 @@ export default function Home() {
       } else {
         await WithdrawalAPIService.addWithdrawal(formDesc, parseFloat(formAmount));
       }
-      toast.success(`${label.charAt(0).toUpperCase() + label.slice(1)} aggiunta con successo!`);
+      toast.success(`${label} aggiunta con successo!`);
       await fetchSummary();
     } catch {
-      // Optimistic update + toast di warning
-      setSummary((prev) => ({
-        totEntrate:
-          type === "entrata"
-            ? prev.totEntrate + parseFloat(formAmount)
-            : prev.totEntrate,
-        totUscite:
-          type === "uscita"
-            ? prev.totUscite + parseFloat(formAmount)
-            : prev.totUscite,
-      }));
-      toast.error(`Errore durante il salvataggio dell'${label}.`);
+      toast.error(`Errore durante il salvataggio dell'${label.toLowerCase()}.`);
     } finally {
       setSubmitting(false);
       setShowModal(null);
