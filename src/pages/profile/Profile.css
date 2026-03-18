@@ -242,6 +242,31 @@
   cursor: not-allowed;
 }
 
+.profile-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.profile-back-btn {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.profile-back-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+}
+
 /* ─── Responsive ────────────────────────────── */
 
 @media (max-width: 560px) {

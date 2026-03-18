@@ -26,7 +26,7 @@ export default function Login() {
     } else {
       await apiFetch("/users/sync", { method: "POST" });
       toast.success("Bentornato!");
-      navigate("/dashboard");
+      navigate("/home");
     }
     setLoading(false);
   };

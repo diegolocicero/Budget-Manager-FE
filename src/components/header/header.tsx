@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import "./Header.css";
 
 const ROUTE_LABELS: Record<string, string> = {
-  "/dashboard": "Dashboard",
+  "/home": "Home",
   "/profile": "Profilo",
 };
 
@@ -41,7 +41,6 @@ export default function Header() {
     loadProfile();
   }, []);
 
-  // chiudi dropdown cliccando fuori
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (
