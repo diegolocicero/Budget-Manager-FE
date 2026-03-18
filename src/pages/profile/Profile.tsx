@@ -11,13 +11,21 @@ const AVATAR_OPTIONS = [
   "/avatars/avatar_2.png",
   "/avatars/avatar_3.png",
   "/avatars/avatar_4.png",
+  "/avatars/avatar_5.png",
+  "/avatars/avatar_6.png",
+  "/avatars/avatar_7.png",
+  "/avatars/avatar_8.png",
 ];
 
 export default function Profile() {
   const navigate = useNavigate();
   const { refreshProfile } = useUser();
 
-  const [profile, setProfile] = useState<UserProfile>({ username: "", email: "", avatarUrl: null });
+  const [profile, setProfile] = useState<UserProfile>({
+    username: "",
+    email: "",
+    avatarUrl: null,
+  });
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [username, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -91,7 +99,6 @@ export default function Profile() {
       <div className="orb orb-2" />
 
       <div className="profile-inner">
-
         <section className="profile-avatar-section">
           <div className="profile-avatar-current">
             <img
@@ -149,7 +156,11 @@ export default function Profile() {
           <button
             className="profile-save-btn"
             onClick={handleSaveUsername}
-            disabled={savingUsername || !username.trim() || username === profile.username}
+            disabled={
+              savingUsername ||
+              !username.trim() ||
+              username === profile.username
+            }
           >
             {savingUsername ? "Salvataggio..." : "Salva Username"}
           </button>
@@ -198,7 +209,6 @@ export default function Profile() {
             ← Indietro
           </button>
         </div>
-
       </div>
     </div>
   );
