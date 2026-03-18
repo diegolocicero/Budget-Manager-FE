@@ -5,12 +5,14 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import Home from "./pages/home/Home.tsx";
+import Header from "./components/header/header.tsx";
 import BackgroundCircles from "./components/BackgroundCirclesComponent.tsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
 
-  // Funzione che ritorna le posizioni dei 5 cerchi in base alla rotta
+  const showHeader = !["/", "/signup"].includes(location.pathname);
+
   const getPositions = (path: string) => {
     supabase.auth.getSession().then(({ data }) => {
       console.log("Connessione Supabase attiva:", data);
@@ -45,6 +47,7 @@ function AnimatedRoutes() {
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
+      {showHeader && <Header />}
       <BackgroundCircles positions={getPositions(location.pathname)} />
       <Routes location={location}>
         <Route path="/" element={<Login />} />

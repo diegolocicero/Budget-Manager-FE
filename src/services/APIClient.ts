@@ -5,6 +5,8 @@ export async function apiFetch(path: string, options: RequestInit = {}): Promise
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
 
+  console.log("TOKEN:", token);
+
   return fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: {

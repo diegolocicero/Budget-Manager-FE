@@ -71,9 +71,6 @@ export default function Home() {
 
       <div className="home-inner">
         <header className="home-header">
-          <div className="home-logo">
-            <span className="logo-text">Home</span>
-          </div>
           <div className="header-right">
             <span className="home-month-badge">{month}</span>
             <div className="home-balance-pill" data-positive={balance >= 0}>
