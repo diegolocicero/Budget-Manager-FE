@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAPIService } from "../../services/UserAPIService";
 import type { UserProfile } from "../../services/UserAPIService";
+import { useUser } from "../../services/UserContext";
 import toast from "react-hot-toast";
 import "./Profile.css";
 
@@ -14,6 +15,7 @@ const AVATAR_OPTIONS = [
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { refreshProfile } = useUser();
 
   const [profile, setProfile] = useState<UserProfile>({ username: "", email: "", avatarUrl: null });
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
@@ -24,7 +26,6 @@ export default function Profile() {
   const [savingUsername, setSavingUsername] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
 
-  // ── Carica profilo ──────────────────────────────────────────────────────
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -39,13 +40,13 @@ export default function Profile() {
     loadProfile();
   }, []);
 
-  // ── Salva avatar ────────────────────────────────────────────────────────
   const handleSaveAvatar = async () => {
     if (!selectedAvatar) return;
     setSavingAvatar(true);
     try {
       await UserAPIService.updateAvatar(profile.username, selectedAvatar);
       setProfile((prev) => ({ ...prev, avatarUrl: selectedAvatar }));
+      await refreshProfile();
       toast.success("Immagine profilo aggiornata!");
     } catch (e: any) {
       toast.error(e.message ?? "Errore nel salvataggio dell'immagine.");
@@ -54,13 +55,13 @@ export default function Profile() {
     }
   };
 
-  // ── Salva username ──────────────────────────────────────────────────────
   const handleSaveUsername = async () => {
     if (!username.trim()) return;
     setSavingUsername(true);
     try {
       await UserAPIService.updateUsername(username, profile.avatarUrl);
       setProfile((prev) => ({ ...prev, username }));
+      await refreshProfile();
       toast.success("Username aggiornato!");
     } catch (e: any) {
       toast.error(e.message ?? "Errore nel salvataggio dell'username.");
@@ -69,7 +70,6 @@ export default function Profile() {
     }
   };
 
-  // ── Aggiorna password ───────────────────────────────────────────────────
   const handleSavePassword = async () => {
     if (!newPassword || !confirmPassword) return;
     setSavingPassword(true);
@@ -92,7 +92,6 @@ export default function Profile() {
 
       <div className="profile-inner">
 
-        {/* ── Avatar Section ── */}
         <section className="profile-avatar-section">
           <div className="profile-avatar-current">
             <img
@@ -108,7 +107,6 @@ export default function Profile() {
           </div>
         </section>
 
-        {/* ── Avatar Picker ── */}
         <section className="profile-card">
           <div className="profile-card-header">
             <span className="profile-card-icon">🖼</span>
@@ -134,7 +132,6 @@ export default function Profile() {
           </button>
         </section>
 
-        {/* ── Username Section ── */}
         <section className="profile-card">
           <div className="profile-card-header">
             <span className="profile-card-icon">👤</span>
@@ -158,7 +155,6 @@ export default function Profile() {
           </button>
         </section>
 
-        {/* ── Password Section ── */}
         <section className="profile-card">
           <div className="profile-card-header">
             <span className="profile-card-icon">🔒</span>
@@ -191,7 +187,6 @@ export default function Profile() {
           </button>
         </section>
 
-        {/* ── Actions ── */}
         <div className="profile-actions-row">
           <button
             className="profile-back-btn"

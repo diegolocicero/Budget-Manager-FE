@@ -1,52 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
-import { apiFetch } from "../../services/APIClient";
-import type { UserProfile } from "../../interface/IUserProfile";
+import { useUser } from "../../services/UserContext";
 import toast from "react-hot-toast";
 import "./Header.css";
 
 const ROUTE_LABELS: Record<string, string> = {
-  "/home": "Home",
+  "/dashboard": "Dashboard",
   "/profile": "Profilo",
 };
 
 export default function Header() {
   const location = useLocation();
   const pageTitle = ROUTE_LABELS[location.pathname] ?? "Flusso";
+  const { profile } = useUser();
 
-  const [profile, setProfile] = useState<UserProfile>({
-    email: "",
-    avatarUrl: null,
-  });
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadProfile = async () => {
-      const { data } = await supabase.auth.getSession();
-      const email = data.session?.user?.email ?? "";
-
-      try {
-        const res = await apiFetch("/users/me");
-        const user = await res.json();
-        setProfile({ email, avatarUrl: user.avatarUrl ?? null });
-      } catch {
-        setProfile({ email, avatarUrl: null });
-      }
-    };
-
-    loadProfile();
-  }, []);
-
-  useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
@@ -80,11 +56,7 @@ export default function Header() {
         >
           <div className="header-avatar-wrap">
             {profile.avatarUrl ? (
-              <img
-                src={profile.avatarUrl}
-                alt="avatar"
-                className="header-avatar-img"
-              />
+              <img src={profile.avatarUrl} alt="avatar" className="header-avatar-img" />
             ) : (
               <div className="header-avatar-placeholder">👤</div>
             )}
@@ -97,18 +69,11 @@ export default function Header() {
           <div className="header-dropdown">
             <div
               className="dropdown-profile-row clickable"
-              onClick={() => {
-                navigate("/profile");
-                setOpen(false);
-              }} 
+              onClick={() => { navigate("/profile"); setOpen(false); }}
             >
               <div className="dropdown-avatar-wrap">
                 {profile.avatarUrl ? (
-                  <img
-                    src={profile.avatarUrl}
-                    alt="avatar"
-                    className="dropdown-avatar-img"
-                  />
+                  <img src={profile.avatarUrl} alt="avatar" className="dropdown-avatar-img" />
                 ) : (
                   <div className="dropdown-avatar-placeholder">👤</div>
                 )}
