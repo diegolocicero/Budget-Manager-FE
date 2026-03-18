@@ -5,11 +5,13 @@ import toast from "react-hot-toast";
 import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
 import "./Login.css"; 
 import { apiFetch } from "../../services/APIClient";
+import { useUser } from "../../services/UserContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { refreshProfile } = useUser();
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -25,6 +27,7 @@ export default function Login() {
       toast.error(error.message);
     } else {
       await apiFetch("/users/sync", { method: "POST" });
+      await refreshProfile();
       toast.success("Bentornato!");
       navigate("/home");
     }

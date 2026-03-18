@@ -14,6 +14,7 @@ export default function Header() {
   const location = useLocation();
   const pageTitle = ROUTE_LABELS[location.pathname] ?? "Flusso";
   const { profile } = useUser();
+  
 
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);

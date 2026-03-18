@@ -116,7 +116,6 @@ export default function Profile() {
 
         <section className="profile-card">
           <div className="profile-card-header">
-            <span className="profile-card-icon">🖼</span>
             <h2 className="profile-card-title">Immagine Profilo</h2>
           </div>
           <div className="avatar-picker-grid">
@@ -141,7 +140,6 @@ export default function Profile() {
 
         <section className="profile-card">
           <div className="profile-card-header">
-            <span className="profile-card-icon">👤</span>
             <h2 className="profile-card-title">Nome Utente</h2>
           </div>
           <div className="profile-field">
@@ -168,7 +166,6 @@ export default function Profile() {
 
         <section className="profile-card">
           <div className="profile-card-header">
-            <span className="profile-card-icon">🔒</span>
             <h2 className="profile-card-title">Password</h2>
           </div>
           <div className="profile-field">

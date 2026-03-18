@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
-import { UserAPIService, type UserProfile } from "../services/UserAPIService";
+import { UserAPIService, type UserProfile } from "./UserAPIService";
 
 interface UserContextType {
   profile: UserProfile;
   refreshProfile: () => Promise<void>;
+  clearProfile: () => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -18,10 +19,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     } catch {}
   };
 
+  const clearProfile = () => {
+  setProfile({ username: "", email: "", avatarUrl: null });
+};
+
+
   useEffect(() => { refreshProfile(); }, []);
 
   return (
-    <UserContext.Provider value={{ profile, refreshProfile }}>
+    <UserContext.Provider value={{ profile, refreshProfile, clearProfile }}>
       {children}
     </UserContext.Provider>
   );
