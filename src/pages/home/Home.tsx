@@ -1,5 +1,6 @@
 import "./Home.css";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { DepositAPIService } from "../../services/DepositAPIService";
 import { WithdrawalAPIService } from "../../services/WithdrawalAPIService";
 import type { Summary } from "../../interface/ISummary";
@@ -20,6 +21,7 @@ export default function Home() {
       setSummary(data);
     } catch {
       setSummary({ totEntrate: 3240.5, totUscite: 1870.2 });
+      toast.error("Impossibile caricare il riepilogo.");
     } finally {
       setLoadingSummary(false);
     }
@@ -32,14 +34,19 @@ export default function Home() {
   const handleAdd = async (type: "entrata" | "uscita") => {
     if (!formDesc || !formAmount) return;
     setSubmitting(true);
+
+    const label = type === "entrata" ? "entrata" : "uscita";
+
     try {
       if (type === "entrata") {
         await DepositAPIService.addDeposit(formDesc, parseFloat(formAmount));
       } else {
         await WithdrawalAPIService.addWithdrawal(formDesc, parseFloat(formAmount));
       }
+      toast.success(`${label.charAt(0).toUpperCase() + label.slice(1)} aggiunta con successo!`);
       await fetchSummary();
     } catch {
+      // Optimistic update + toast di warning
       setSummary((prev) => ({
         totEntrate:
           type === "entrata"
@@ -50,6 +57,7 @@ export default function Home() {
             ? prev.totUscite + parseFloat(formAmount)
             : prev.totUscite,
       }));
+      toast.error(`Errore durante il salvataggio dell'${label}.`);
     } finally {
       setSubmitting(false);
       setShowModal(null);
