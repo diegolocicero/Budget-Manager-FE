@@ -45,6 +45,7 @@
 }
 
 .header-user-btn {
+  width: min-content;
   display: flex;
   align-items: center;
   gap: 0.6rem;

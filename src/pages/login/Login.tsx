@@ -4,6 +4,7 @@ import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
 import "./Login.css"; 
+import { apiFetch } from "../../services/APIClient";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -23,6 +24,7 @@ export default function Login() {
     if (error) {
       toast.error(error.message);
     } else {
+      await apiFetch("/users/sync", { method: "POST" });
       toast.success("Bentornato!");
       navigate("/dashboard");
     }
