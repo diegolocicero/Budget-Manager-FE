@@ -1,4 +1,3 @@
-import { API_BASE_URL } from "../constants";
 import type { Summary } from "../interface/ISummary";
 import { apiFetch } from "./APIClient";
 
@@ -43,7 +42,8 @@ export const DepositAPIService = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
     });
-    if (!res.ok) throw new Error(`Errore nell'aggiornamento dell'entrata con id ${id}`);
+    if (!res.ok)
+      throw new Error(`Errore nell'aggiornamento dell'entrata con id ${id}`);
     return res.json();
   },
 
@@ -51,7 +51,8 @@ export const DepositAPIService = {
     const res = await apiFetch(`/deposits/${id}`, {
       method: "DELETE",
     });
-    if (!res.ok) throw new Error(`Errore nella cancellazione dell'entrata con id ${id}`);
+    if (!res.ok)
+      throw new Error(`Errore nella cancellazione dell'entrata con id ${id}`);
   },
 
   // Calcola il summary aggregando getAll deposits + withdrawals
@@ -66,5 +67,12 @@ export const DepositAPIService = {
   // Aggiunge una entrata — wrapper usato dalla Home
   async addDeposit(label: string, value: number): Promise<DepositResponse> {
     return DepositAPIService.create({ label, value });
+  },
+
+  // Get last 5 deposits
+  async getRecent(limit: number = 5): Promise<DepositResponse[]> {
+    const res = await apiFetch(`/deposits/recent?limit=${limit}`);
+    if (!res.ok) throw new Error("Errore nel recupero delle ultime entrate");
+    return res.json();
   },
 };

@@ -36,13 +36,17 @@ export const WithdrawalAPIService = {
     return res.json();
   },
 
-  async update(id: number, request: WithdrawalRequest): Promise<WithdrawalResponse> {
+  async update(
+    id: number,
+    request: WithdrawalRequest,
+  ): Promise<WithdrawalResponse> {
     const res = await apiFetch(`/withdrawals/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
     });
-    if (!res.ok) throw new Error(`Errore nell'aggiornamento dell'uscita con id ${id}`);
+    if (!res.ok)
+      throw new Error(`Errore nell'aggiornamento dell'uscita con id ${id}`);
     return res.json();
   },
 
@@ -50,11 +54,22 @@ export const WithdrawalAPIService = {
     const res = await apiFetch(`/withdrawals/${id}`, {
       method: "DELETE",
     });
-    if (!res.ok) throw new Error(`Errore nella cancellazione dell'uscita con id ${id}`);
+    if (!res.ok)
+      throw new Error(`Errore nella cancellazione dell'uscita con id ${id}`);
   },
 
   // Wrapper usato dalla Home
-  async addWithdrawal(label: string, value: number): Promise<WithdrawalResponse> {
+  async addWithdrawal(
+    label: string,
+    value: number,
+  ): Promise<WithdrawalResponse> {
     return WithdrawalAPIService.create({ label, value });
+  },
+
+  // Get last 5 withdrawals
+  async getRecent(limit: number = 5): Promise<WithdrawalResponse[]> {
+    const res = await apiFetch(`/withdrawals/recent?limit=${limit}`);
+    if (!res.ok) throw new Error("Errore nel recupero delle ultime uscite");
+    return res.json();
   },
 };

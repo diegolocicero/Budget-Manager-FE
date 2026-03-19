@@ -2,67 +2,15 @@ import "./Home.css";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import TransactionList from "../../components/transactionList/transactionList";
-import { DepositAPIService } from "../../services/DepositAPIService";
-import { WithdrawalAPIService } from "../../services/WithdrawalAPIService";
+import { DepositAPIService, type DepositResponse } from "../../services/DepositAPIService";
+import { WithdrawalAPIService, type WithdrawalResponse } from "../../services/WithdrawalAPIService";
 import type { Summary } from "../../interface/ISummary";
 
-const MOCK_ENTRATE = [
-  { id: 1, label: "Stipendio", value: 2500, createdAt: "2026-03-15T09:00:00Z" },
-  {
-    id: 2,
-    label: "Freelance progetto web",
-    value: 800,
-    createdAt: "2026-03-12T14:30:00Z",
-  },
-  {
-    id: 3,
-    label: "Rimborso spese",
-    value: 120,
-    createdAt: "2026-03-10T11:00:00Z",
-  },
-  {
-    id: 4,
-    label: "Vendita usato",
-    value: 200,
-    createdAt: "2026-03-08T16:00:00Z",
-  },
-  {
-    id: 5,
-    label: "Bonus trimestrale",
-    value: 400,
-    createdAt: "2026-03-05T10:00:00Z",
-  },
-];
-
-const MOCK_USCITE = [
-  { id: 1, label: "Affitto", value: 900, createdAt: "2026-03-16T08:00:00Z" },
-  {
-    id: 2,
-    label: "Supermercato",
-    value: 150,
-    createdAt: "2026-03-14T19:00:00Z",
-  },
-  {
-    id: 3,
-    label: "Bolletta luce",
-    value: 85,
-    createdAt: "2026-03-11T12:00:00Z",
-  },
-  {
-    id: 4,
-    label: "Abbonamento Netflix",
-    value: 18,
-    createdAt: "2026-03-09T00:00:00Z",
-  },
-  { id: 5, label: "Palestra", value: 45, createdAt: "2026-03-07T07:30:00Z" },
-];
-
 export default function Home() {
-  const [summary, setSummary] = useState<Summary>({
-    totEntrate: 0,
-    totUscite: 0,
-  });
+  const [summary, setSummary] = useState<Summary>({ totEntrate: 0, totUscite: 0 });
   const [loadingSummary, setLoadingSummary] = useState(true);
+  const [recentEntrate, setRecentEntrate] = useState<DepositResponse[]>([]);
+  const [recentUscite, setRecentUscite] = useState<WithdrawalResponse[]>([]);
 
   const [showModal, setShowModal] = useState<"entrata" | "uscita" | null>(null);
   const [formDesc, setFormDesc] = useState("");
@@ -72,13 +20,17 @@ export default function Home() {
   const fetchSummary = async () => {
     setLoadingSummary(true);
     try {
-      const [deposits, withdrawals] = await Promise.all([
+      const [deposits, withdrawals, recentDep, recentWith] = await Promise.all([
         DepositAPIService.getAll(),
         WithdrawalAPIService.getAll(),
+        DepositAPIService.getRecent(5),
+        WithdrawalAPIService.getRecent(5),
       ]);
       const totEntrate = deposits.reduce((acc, d) => acc + d.value, 0);
       const totUscite = withdrawals.reduce((acc, w) => acc + w.value, 0);
       setSummary({ totEntrate, totUscite });
+      setRecentEntrate(recentDep);
+      setRecentUscite(recentWith);
     } catch {
       toast.error("Impossibile caricare il riepilogo.");
     } finally {
@@ -99,10 +51,7 @@ export default function Home() {
       if (type === "entrata") {
         await DepositAPIService.addDeposit(formDesc, parseFloat(formAmount));
       } else {
-        await WithdrawalAPIService.addWithdrawal(
-          formDesc,
-          parseFloat(formAmount),
-        );
+        await WithdrawalAPIService.addWithdrawal(formDesc, parseFloat(formAmount));
       }
       toast.success(`${label} aggiunta con successo!`);
       await fetchSummary();
@@ -117,15 +66,9 @@ export default function Home() {
   };
 
   const balance = summary.totEntrate - summary.totUscite;
-  const month = new Date().toLocaleString("it-IT", {
-    month: "long",
-    year: "numeric",
-  });
+  const month = new Date().toLocaleString("it-IT", { month: "long", year: "numeric" });
   const fmt = (n: number) =>
-    n.toLocaleString("it-IT", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    n.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <div className="home-container">
@@ -140,8 +83,7 @@ export default function Home() {
             <div className="home-balance-pill" data-positive={balance >= 0}>
               <span className="balance-label">Saldo</span>
               <span className="balance-value">
-                {balance >= 0 ? "+" : ""}
-                {fmt(balance)} €
+                {balance >= 0 ? "+" : ""}{fmt(balance)} €
               </span>
             </div>
           </div>
@@ -159,8 +101,7 @@ export default function Home() {
                 <span className="skeleton" />
               ) : (
                 <span className="amount-value">
-                  {fmt(summary.totEntrate)}{" "}
-                  <span className="amount-currency">€</span>
+                  {fmt(summary.totEntrate)} <span className="amount-currency">€</span>
                 </span>
               )}
             </div>
@@ -178,8 +119,7 @@ export default function Home() {
                 <span className="skeleton" />
               ) : (
                 <span className="amount-value">
-                  {fmt(summary.totUscite)}{" "}
-                  <span className="amount-currency">€</span>
+                  {fmt(summary.totUscite)} <span className="amount-currency">€</span>
                 </span>
               )}
             </div>
@@ -188,28 +128,22 @@ export default function Home() {
         </section>
 
         <section className="actions-grid">
-          <button
-            className="action-btn btn-entrata"
-            onClick={() => setShowModal("entrata")}
-          >
+          <button className="action-btn btn-entrata" onClick={() => setShowModal("entrata")}>
             <div className="btn-ring" />
             <span className="btn-plus">+</span>
             <span className="btn-label">Aggiungi Entrata</span>
           </button>
 
-          <button
-            className="action-btn btn-uscita"
-            onClick={() => setShowModal("uscita")}
-          >
+          <button className="action-btn btn-uscita" onClick={() => setShowModal("uscita")}>
             <div className="btn-ring" />
             <span className="btn-plus">+</span>
             <span className="btn-label">Aggiungi Uscita</span>
           </button>
         </section>
-        
+
         <section className="transactions-grid">
-          <TransactionList type="entrata" transactions={MOCK_ENTRATE} />
-          <TransactionList type="uscita" transactions={MOCK_USCITE} />
+          <TransactionList type="entrata" transactions={recentEntrate} />
+          <TransactionList type="uscita" transactions={recentUscite} />
         </section>
       </div>
 
@@ -220,21 +154,10 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-top">
-              <h3
-                className={
-                  showModal === "entrata"
-                    ? "modal-title-entrata"
-                    : "modal-title-uscita"
-                }
-              >
+              <h3 className={showModal === "entrata" ? "modal-title-entrata" : "modal-title-uscita"}>
                 {showModal === "entrata" ? "↑ Nuova Entrata" : "↓ Nuova Uscita"}
               </h3>
-              <button
-                className="modal-close"
-                onClick={() => setShowModal(null)}
-              >
-                ✕
-              </button>
+              <button className="modal-close" onClick={() => setShowModal(null)}>✕</button>
             </div>
 
             <div className="modal-field">

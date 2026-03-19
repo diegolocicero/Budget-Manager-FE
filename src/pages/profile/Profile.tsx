@@ -200,7 +200,7 @@ export default function Profile() {
             className="profile-back-btn"
             onClick={() => {
               window.scrollTo(0, 0);
-              navigate("/dashboard");
+              navigate("/home");
             }}
           >
             ← Indietro
