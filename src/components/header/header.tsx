@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import { useUser } from "../../services/UserContext";
 import toast from "react-hot-toast";
-import "./Header.css";
+import "./header.css";
 
 const ROUTE_LABELS: Record<string, string> = {
   "/dashboard": "Dashboard",
