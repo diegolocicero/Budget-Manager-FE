@@ -1,4 +1,3 @@
-import { API_BASE_URL } from "../constants";
 import { apiFetch } from "./APIClient";
 
 export interface WithdrawalRequest {
