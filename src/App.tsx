@@ -10,6 +10,7 @@ import BackgroundCircles from "./components/BackgroundCircles.tsx";
 import Profile from "./pages/profile/Profile.tsx";
 import { UserProvider } from "./services/UserContext.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
+import { useEffect } from "react";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -46,6 +47,17 @@ function AnimatedRoutes() {
       { x: "80vw", y: "10vh", size: 450 },
     ];
   };
+
+  const pageTitles: Record<string, string> = {
+    "/": "Login",
+    "/signup": "Registrati",
+    "/home": "Home",
+    "/profile": "Profilo",
+  };
+
+  useEffect(() => {
+    document.title = pageTitles[location.pathname] ?? "App";
+  }, [location.pathname]);
 
   return (
     <>
