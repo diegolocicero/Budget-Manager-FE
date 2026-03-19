@@ -1,5 +1,5 @@
 // src/components/transactionList/TransactionList.tsx
-import "./TransactionList.css";
+import "./transactionList.css";
 
 interface Transaction {
   id: number;
