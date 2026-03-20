@@ -92,9 +92,9 @@
   font-size: 1rem;
 }
 
-/* ─── Email ─────────────────────────────────── */
+/* ─── Username ─────────────────────────────────── */
 
-.header-email {
+.header-username {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.75);
   max-width: 180px;
@@ -208,7 +208,7 @@
 /* ─── Responsive ────────────────────────────── */
 
 @media (max-width: 560px) {
-  .header-email {
+  .header-username {
     display: none;
   }
 

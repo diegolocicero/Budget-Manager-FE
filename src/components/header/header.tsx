@@ -62,7 +62,7 @@ export default function Header() {
               <div className="header-avatar-placeholder">👤</div>
             )}
           </div>
-          <span className="header-email">{profile.email}</span>
+          <span className="header-username">{profile.username}</span>
           <span className={`header-chevron ${open ? "open" : ""}`}>›</span>
         </button>
 
