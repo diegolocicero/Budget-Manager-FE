@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 import "./Signup.css";
 import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -34,34 +36,42 @@ export default function Signup() {
 
   return (
     <div className="signup-container">
-      
       {loading && <LoadingSpinner />}
 
       <form className="signup-card" onSubmit={handleSignup}>
         <h2>Sign Up</h2>
-        
+
         <div className="input-group">
-          <input 
-            type="email" 
-            id="email" 
-            placeholder=" " 
-            autoComplete="email" 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
+          <input
+            type="email"
+            id="email"
+            placeholder=" "
+            autoComplete="email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <label htmlFor="email">Email</label>
         </div>
 
         <div className="input-group">
-          <input 
-            type="password" 
-            id="password" 
-            placeholder=" " 
-            autoComplete="new-password" 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            placeholder=" "
+            autoComplete="new-password"
+            className="has-toggle"
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <label htmlFor="password">Password</label>
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword((v) => !v)}
+            aria-label={showPassword ? "Nascondi password" : "Mostra password"}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
 
         <button type="submit" disabled={loading}>
