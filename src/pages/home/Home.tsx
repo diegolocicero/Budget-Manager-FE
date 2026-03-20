@@ -142,8 +142,8 @@ export default function Home() {
         </section>
 
         <section className="transactions-grid">
-          <TransactionList type="entrata" transactions={recentEntrate} />
-          <TransactionList type="uscita" transactions={recentUscite} />
+          <TransactionList type="entrata" transactions={recentEntrate} onRefresh={fetchSummary}/>
+          <TransactionList type="uscita" transactions={recentUscite} onRefresh={fetchSummary} />
         </section>
       </div>
 

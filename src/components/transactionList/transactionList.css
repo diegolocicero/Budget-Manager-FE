@@ -143,6 +143,32 @@
   color: #f87171;
 }
 
+.transaction-item--clickable {
+  cursor: pointer;
+  outline: none;
+}
+ 
+.transaction-item--clickable:focus-visible {
+  box-shadow: 0 0 0 2px rgba(73, 136, 196, 0.5);
+}
+ 
+.transaction-item--clickable:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+ 
+.transaction-edit-hint {
+  font-size: 0.72rem;
+  color: rgba(201, 190, 255, 0.0);
+  transition: color 0.15s, opacity 0.15s;
+  flex-shrink: 0;
+  margin-left: -0.25rem;
+}
+ 
+.transaction-item--clickable:hover .transaction-edit-hint {
+  color: rgba(201, 190, 255, 0.35);
+}
+ 
+
 /* ─── Responsive ────────────────────────────── */
 
 @media (max-width: 560px) {
