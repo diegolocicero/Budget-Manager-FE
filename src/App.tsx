@@ -11,11 +11,13 @@ import Profile from "./pages/profile/Profile.tsx";
 import { UserProvider } from "./services/UserContext.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import { useEffect } from "react";
+import ForgotPassword from "./pages/home/forgotPassword/forgotPassword.tsx";
+import ResetPassword from "./pages/resetPassword/resetPassword.tsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
 
-  const showHeader = !["/", "/signup"].includes(location.pathname);
+  const showHeader = !["/", "/signup", "/forgot-password", "/reset-password"].includes(location.pathname);
 
   const getPositions = (path: string) => {
     supabase.auth.getSession().then(({ data }) => {
@@ -69,6 +71,8 @@ function AnimatedRoutes() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </>
   );

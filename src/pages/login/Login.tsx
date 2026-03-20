@@ -74,11 +74,15 @@ export default function Login() {
         </div>
 
         <button type="submit" disabled={loading}>
-          {loading ? "Accedi..." : "Login"}
+          {loading ? "Accedi..." : "Accedi"}
         </button>
 
         <p>
-          Don't have an account? <Link to="/signup" className="p-link">Sign Up</Link>
+          Non hai un account? <Link to="/signup" className="p-link">Registrati</Link>
+        </p>
+
+        <p style={{ marginTop: "-1.5rem", fontSize: "13px", opacity: 0.5, fontWeight: 300 }}>
+          <Link to="/forgot-password" className="p-link">Hai dimenticato la password?</Link>
         </p>
       </form>
     </div>

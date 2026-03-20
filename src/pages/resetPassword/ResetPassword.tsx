@@ -1,57 +1,38 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import "./Signup.css";
 import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
+import "./resetPassword.css";
 
-export default function Signup() {
-  const [email, setEmail] = useState("");
+export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-      },
-    });
+    const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Account creato! Verifica la tua email.");
+      toast.success("Password aggiornata!");
       navigate("/");
     }
     setLoading(false);
   };
 
   return (
-    <div className="signup-container">
+    <div className="login-container">
       {loading && <LoadingSpinner />}
 
-      <form className="signup-card" onSubmit={handleSignup}>
-        <h2>Registrati</h2>
-
-        <div className="input-group">
-          <input
-            type="email"
-            id="email"
-            placeholder=" "
-            autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <label htmlFor="email">Email</label>
-        </div>
+      <form className="login-card" onSubmit={handleSubmit}>
+        <h2>Nuova Password</h2>
 
         <div className="input-group">
           <input
@@ -63,7 +44,7 @@ export default function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Nuova password</label>
           <button
             type="button"
             className="password-toggle"
@@ -75,12 +56,8 @@ export default function Signup() {
         </div>
 
         <button type="submit" disabled={loading}>
-          Registrati
+          {loading ? "Salvataggio..." : "Conferma"}
         </button>
-
-        <p>
-          Hai già un account? <Link to="/" className="p-link">Accedi</Link>
-        </p>
       </form>
     </div>
   );
