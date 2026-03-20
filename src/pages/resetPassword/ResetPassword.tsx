@@ -4,7 +4,7 @@ import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
 import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
-import "./resetPassword.css";
+import "./ResetPassword.css";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");

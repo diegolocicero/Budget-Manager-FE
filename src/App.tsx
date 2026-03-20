@@ -11,8 +11,8 @@ import Profile from "./pages/profile/Profile.tsx";
 import { UserProvider } from "./services/UserContext.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import { useEffect } from "react";
-import ForgotPassword from "./pages/home/forgotPassword/forgotPassword.tsx";
-import ResetPassword from "./pages/resetPassword/resetPassword.tsx";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword.tsx";
+import ResetPassword from "./pages/resetPassword/ResetPassword.tsx";
 
 function AnimatedRoutes() {
   const location = useLocation();

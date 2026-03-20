@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../../../supabaseClient";
+import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
-import LoadingSpinner from "../../../components/loadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner";
 import "./ForgotPassword.css";
 
 export default function ForgotPassword() {
