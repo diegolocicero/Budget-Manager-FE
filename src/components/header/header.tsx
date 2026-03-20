@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import "./header.css";
 
 const ROUTE_LABELS: Record<string, string> = {
-  "/dashboard": "Dashboard",
+  "/home": "Home",
   "/profile": "Profilo",
 };
 
