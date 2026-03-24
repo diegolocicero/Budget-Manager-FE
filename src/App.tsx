@@ -5,7 +5,9 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import Home from "./pages/home/Home.tsx";
+import Insight from "./pages/insight/Insight.tsx";
 import Header from "./components/header/header.tsx";
+import Sidebar from "./components/sidebar/sidebar.tsx";
 import BackgroundCircles from "./components/BackgroundCircles.tsx";
 import Profile from "./pages/profile/Profile.tsx";
 import { UserProvider } from "./services/UserContext.tsx";
@@ -55,6 +57,7 @@ function AnimatedRoutes() {
     "/signup": "Registrati",
     "/home": "Home",
     "/profile": "Profilo",
+    "/insight": "Insight",
   };
 
   useEffect(() => {
@@ -65,11 +68,13 @@ function AnimatedRoutes() {
     <>
       <Toaster position="top-right" reverseOrder={false} />
       {showHeader && <Header />}
+      {showHeader && <Sidebar />}
       <BackgroundCircles positions={getPositions(location.pathname)} />
       <Routes location={location}>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/insight" element={<Insight />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

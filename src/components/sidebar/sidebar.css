@@ -1,0 +1,175 @@
+/* ─── Desktop: sidebar verticale ─────────────── */
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 64px;
+  height: calc(100vh - 64px);
+  width: 60px;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 0;
+  z-index: 50;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.nav-item {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(201, 190, 255, 0.35);
+  transition: color 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  color: rgba(201, 190, 255, 0.75);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active {
+  color: var(--primary);
+  background: rgba(73, 136, 196, 0.12);
+}
+
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 25%;
+  bottom: 25%;
+  width: 3px;
+  background: var(--primary);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Tooltip desktop */
+.nav-tooltip {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  background: rgba(10, 10, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.65rem;
+  border-radius: 7px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.nav-tooltip::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item:hover .nav-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ─── Mobile: bottom navigation bar ──────────── */
+
+@media (max-width: 560px) {
+  .sidebar {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 64px;
+    flex-direction: row;
+    justify-content: space-around;
+    border-right: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0;
+    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    flex: unset;
+    gap: 0;
+  }
+
+  .nav-item {
+    flex: 1;
+    height: 100%;
+    width: auto;
+    border-radius: 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-item.active {
+    background: transparent;
+  }
+
+  /* Su mobile l'indicatore attivo è una linea in cima invece che a sinistra */
+  .nav-item.active::before {
+    left: 25%;
+    right: 25%;
+    top: -7.5px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    border-radius: 0 0 3px 3px;
+  }
+
+  /* Su mobile il tooltip diventa una label visibile sotto l'icona */
+  .nav-tooltip {
+    position: static;
+    opacity: 1;
+    transform: none;
+    background: transparent;
+    border: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.03em;
+    padding: 0;
+    color: rgba(201, 190, 255, 0.35);
+    pointer-events: none;
+  }
+
+  .nav-item.active .nav-tooltip {
+    color: var(--primary);
+  }
+
+  .nav-tooltip::before {
+    display: none;
+  }
+}

@@ -1,0 +1,7 @@
+.insight-container {
+  margin-top: 64px;
+  margin-left: 60px;
+  min-height: calc(100vh - 64px);
+  padding: 2rem 1.5rem;
+  color: white;
+}

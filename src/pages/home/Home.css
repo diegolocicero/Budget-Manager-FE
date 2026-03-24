@@ -614,6 +614,16 @@ input[type="number"] {
   align-items: start;
 }
 
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+ 
+.home-container {
+  margin-left: 60px; 
+  flex: 1;
+}
+
 @media (max-width: 560px) {
   .summary-grid,
   .actions-grid {
@@ -641,5 +651,9 @@ input[type="number"] {
 
   .transactions-grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-container {
+    margin-left: 0; 
   }
 }

@@ -8,6 +8,7 @@ import "./header.css";
 const ROUTE_LABELS: Record<string, string> = {
   "/home": "Home",
   "/profile": "Profilo",
+  "/insight": "Insight",
 };
 
 export default function Header() {
