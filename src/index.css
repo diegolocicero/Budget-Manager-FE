@@ -18,3 +18,9 @@
 body {
   overflow-y: hidden;
 }
+
+@media (max-width: 560px) {
+  body{
+    overflow: auto;
+  }
+}
