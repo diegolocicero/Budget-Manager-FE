@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "./Insight.css";
 import { 
     Chart as ChartJS, 
@@ -59,6 +59,13 @@ export default function Insight() {
         }));
     };
 
+    // Funzione per calcolare il totale di una lista
+    const calculateTotal = (data: AggregatedData[]) => 
+        data.reduce((sum, item) => sum + item.value, 0).toLocaleString("it-IT", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
     const generateHighContrastColors = (hue: number, count: number) => {
         const lightnessPattern = [35, 75, 50, 90, 25, 60, 40]; 
         return Array.from({ length: count }, (_, i) => {
@@ -82,9 +89,7 @@ export default function Insight() {
     const options: ChartOptions<"doughnut"> = {
         responsive: true,
         maintainAspectRatio: false,
-        layout: {
-            padding: 40 
-        },
+        layout: { padding: 40 },
         plugins: {
             legend: {
                 position: 'bottom' as const,
@@ -117,7 +122,12 @@ export default function Insight() {
         <div className="insight-container">
             <div className="charts-grid">
                 <section className="chart-card">
-                    <h2>Entrate</h2>
+                    <div className="card-header">
+                        <h2>Entrate</h2>
+                        <div className="chart-total total-deposits">
+                            +{calculateTotal(deposits)} €
+                        </div>
+                    </div>
                     <div className="chart-wrapper">
                         {deposits.length > 0 ? (
                             <Doughnut data={getChartConfig(deposits, "Entrate (€)", 140)} options={options} />
@@ -128,7 +138,12 @@ export default function Insight() {
                 </section>
 
                 <section className="chart-card">
-                    <h2>Uscite</h2>
+                    <div className="card-header">
+                        <h2>Uscite</h2>
+                        <div className="chart-total total-withdrawals">
+                            -{calculateTotal(withdrawals)} €
+                        </div>
+                    </div>
                     <div className="chart-wrapper">
                         {withdrawals.length > 0 ? (
                             <Doughnut data={getChartConfig(withdrawals, "Uscite (€)", 0)} options={options} />
