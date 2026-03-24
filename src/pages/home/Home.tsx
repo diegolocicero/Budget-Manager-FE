@@ -103,7 +103,7 @@ export default function Home() {
               </div>
               <div className="card-amount">
                 {loadingSummary ? (
-                  <span className="skeleton" />
+                  <span className="skeleton amount-skeleton" />
                 ) : (
                   <span className="amount-value">
                     {fmt(summary.totEntrate)} <span className="amount-currency">€</span>
@@ -121,7 +121,7 @@ export default function Home() {
               </div>
               <div className="card-amount">
                 {loadingSummary ? (
-                  <span className="skeleton" />
+                  <span className="skeleton amount-skeleton" />
                 ) : (
                   <span className="amount-value">
                     {fmt(summary.totUscite)} <span className="amount-currency">€</span>
@@ -147,8 +147,18 @@ export default function Home() {
           </section>
 
           <section className="transactions-grid">
-            <TransactionList type="entrata" transactions={recentEntrate} onRefresh={fetchSummary} />
-            <TransactionList type="uscita" transactions={recentUscite} onRefresh={fetchSummary} />
+            <TransactionList 
+              type="entrata" 
+              transactions={recentEntrate} 
+              onRefresh={fetchSummary} 
+              loading={loadingSummary} 
+            />
+            <TransactionList 
+              type="uscita" 
+              transactions={recentUscite} 
+              onRefresh={fetchSummary} 
+              loading={loadingSummary} 
+            />
           </section>
         </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./transactionList.css";
 import TransactionModal from "../transactionModal/transactionModal";
 
@@ -11,8 +11,9 @@ interface Transaction {
 
 interface Props {
   type: "entrata" | "uscita";
-  transactions: Transaction[];
+  transactions: Transaction[]; // Usiamo direttamente queste
   onRefresh: () => void;
+  loading: boolean;
 }
 
 const fmt = (n: number) =>
@@ -21,25 +22,9 @@ const fmt = (n: number) =>
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString("it-IT", { day: "2-digit", month: "short" });
 
-export default function TransactionList({ type, transactions: initialTransactions, onRefresh }: Props) {
+export default function TransactionList({ type, transactions, onRefresh, loading }: Props) {
   const isEntrata = type === "entrata";
-
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
-
-  useEffect(() => {
-    setTransactions(initialTransactions);
-  }, [initialTransactions]);
   const [selected, setSelected] = useState<Transaction | null>(null);
-
-  const handleSave = (updated: Transaction) => {
-    setTransactions((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
-    onRefresh();
-  };
-
-  const handleDelete = (id: number) => {
-    setTransactions((prev) => prev.filter((t) => t.id !== id));
-    onRefresh();
-  };
 
   return (
     <>
@@ -52,19 +37,31 @@ export default function TransactionList({ type, transactions: initialTransaction
             {isEntrata ? "Ultime Entrate" : "Ultime Uscite"}
           </h3>
         </div>
+        
         <ul className="transactions-list">
-          {transactions.length === 0 ? (
+          {/* LOGICA DI PRIORITÀ CORRETTA */}
+          {loading ? (
+            // 1. Se sta caricando (loading === true), mostra SEMPRE lo skeleton
+            Array.from({ length: 5 }).map((_, i) => (
+              <li key={i} className="transaction-item skeleton-item">
+                <div className="skeleton skeleton-dot" />
+                <div className="transaction-info">
+                  <div className="skeleton skeleton-label" />
+                  <div className="skeleton skeleton-date" />
+                </div>
+                <div className="skeleton skeleton-amount-list" />
+              </li>
+            ))
+          ) : transactions.length === 0 ? (
+            // 2. Se ha finito di caricare (loading === false) MA l'array è vuoto
             <li className="transaction-empty">Nessun movimento recente</li>
           ) : (
+            // 3. Se ha finito di caricare e ci sono dati
             transactions.map((item) => (
               <li
                 key={item.id}
                 className="transaction-item transaction-item--clickable"
                 onClick={() => setSelected(item)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && setSelected(item)}
-                aria-label={`Modifica transazione: ${item.label}`}
               >
                 <div className={`transaction-dot ${isEntrata ? "dot-entrata" : "dot-uscita"}`} />
                 <div className="transaction-info">
@@ -85,8 +82,8 @@ export default function TransactionList({ type, transactions: initialTransaction
         transaction={selected}
         type={type}
         onClose={() => setSelected(null)}
-        onSave={handleSave}
-        onDelete={handleDelete}
+        onSave={() => onRefresh()} 
+        onDelete={() => onRefresh()} 
       />
     </>
   );
