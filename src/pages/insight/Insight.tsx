@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Insight.css";
 import { 
     Chart as ChartJS, 
@@ -59,7 +59,6 @@ export default function Insight() {
         }));
     };
 
-    // Funzione per calcolare il totale di una lista
     const calculateTotal = (data: AggregatedData[]) => 
         data.reduce((sum, item) => sum + item.value, 0).toLocaleString("it-IT", {
             minimumFractionDigits: 2,
@@ -89,31 +88,17 @@ export default function Insight() {
     const options: ChartOptions<"doughnut"> = {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { padding: 40 },
         plugins: {
-            legend: {
-                position: 'bottom' as const,
-                labels: { 
-                    padding: 30, 
-                    color: '#C9BEFF', 
-                    font: { size: 14, weight: 'bold' },
-                    usePointStyle: true,
-                }
-            },
+            legend: { display: false }, 
             tooltip: {
                 backgroundColor: 'rgba(28, 77, 141, 0.95)',
                 titleColor: '#BDE8F5',
                 bodyColor: '#C9BEFF',
-                titleFont: { size: 16, weight: 'bold' },
-                bodyFont: { size: 14 },
                 padding: 15,
                 cornerRadius: 15,
-                displayColors: true,
-                borderColor: 'rgba(73, 136, 196, 0.5)',
-                borderWidth: 1
             }
         },
-        cutout: '65%'
+        cutout: '70%'
     };
 
     if (loading) return <div className="loading-state">ANALYZING DATA...</div>;
@@ -135,6 +120,15 @@ export default function Insight() {
                             <div className="empty-state-msg">Nessun deposito fatto</div>
                         )}
                     </div>
+                    <div className="custom-legend">
+                        {deposits.map((item, index) => (
+                            <div key={index} className="legend-badge">
+                                <span className="badge-dot" style={{ backgroundColor: generateHighContrastColors(140, deposits.length)[index] }}></span>
+                                <span className="badge-label">{item.label}</span>
+                                <span className="badge-value">{item.value.toLocaleString("it-IT")}€</span>
+                            </div>
+                        ))}
+                    </div>
                 </section>
 
                 <section className="chart-card">
@@ -150,6 +144,15 @@ export default function Insight() {
                         ) : (
                             <div className="empty-state-msg">Nessuna spesa fatta</div>
                         )}
+                    </div>
+                    <div className="custom-legend">
+                        {withdrawals.map((item, index) => (
+                            <div key={index} className="legend-badge">
+                                <span className="badge-dot" style={{ backgroundColor: generateHighContrastColors(0, withdrawals.length)[index] }}></span>
+                                <span className="badge-label">{item.label}</span>
+                                <span className="badge-value">{item.value.toLocaleString("it-IT")}€</span>
+                            </div>
+                        ))}
                     </div>
                 </section>
             </div>
