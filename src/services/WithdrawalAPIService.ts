@@ -1,31 +1,22 @@
+import type { TransactionRequest } from "../interface/TransactionRequest";
+import type { TransactionResponse } from "../interface/TransactionResponse";
 import { apiFetch } from "./APIClient";
 
-export interface WithdrawalRequest {
-  value: number;
-  label: string;
-}
-
-export interface WithdrawalResponse {
-  id: number;
-  value: number;
-  label: string;
-  createdAt: string;
-}
 
 export const WithdrawalAPIService = {
-  async getAll(): Promise<WithdrawalResponse[]> {
+  async getAll(): Promise<TransactionResponse[]> {
     const res = await apiFetch("/withdrawals");
     if (!res.ok) throw new Error("Errore nel recupero delle uscite");
     return res.json();
   },
 
-  async getById(id: number): Promise<WithdrawalResponse> {
+  async getById(id: number): Promise<TransactionResponse> {
     const res = await apiFetch(`/withdrawals/${id}`);
     if (!res.ok) throw new Error(`Uscita con id ${id} non trovata`);
     return res.json();
   },
 
-  async create(request: WithdrawalRequest): Promise<WithdrawalResponse> {
+  async create(request: TransactionRequest): Promise<TransactionResponse> {
     const res = await apiFetch("/withdrawals", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -37,8 +28,8 @@ export const WithdrawalAPIService = {
 
   async update(
     id: number,
-    request: WithdrawalRequest,
-  ): Promise<WithdrawalResponse> {
+    request: TransactionRequest,
+  ): Promise<TransactionResponse> {
     const res = await apiFetch(`/withdrawals/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -61,12 +52,12 @@ export const WithdrawalAPIService = {
   async addWithdrawal(
     label: string,
     value: number,
-  ): Promise<WithdrawalResponse> {
+  ): Promise<TransactionResponse> {
     return WithdrawalAPIService.create({ label, value });
   },
 
   // Get last 5 withdrawals
-  async getRecent(limit: number = 5): Promise<WithdrawalResponse[]> {
+  async getRecent(limit: number = 5): Promise<TransactionResponse[]> {
     const res = await apiFetch(`/withdrawals/recent?limit=${limit}`);
     if (!res.ok) throw new Error("Errore nel recupero delle ultime uscite");
     return res.json();

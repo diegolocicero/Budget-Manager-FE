@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import TransactionList from "../../components/transactionList/transactionList";
 import Sidebar from "../../components/sidebar/sidebar";
-import { DepositAPIService, type DepositResponse } from "../../services/DepositAPIService";
-import { WithdrawalAPIService, type WithdrawalResponse } from "../../services/WithdrawalAPIService";
+import { DepositAPIService } from "../../services/DepositAPIService";
+import type { TransactionResponse } from "../../interface/TransactionResponse";
+import { WithdrawalAPIService } from "../../services/WithdrawalAPIService";
 import type { Summary } from "../../interface/ISummary";
 
 export default function Home() {
   const [summary, setSummary] = useState<Summary>({ totEntrate: 0, totUscite: 0 });
   const [loadingSummary, setLoadingSummary] = useState(true);
-  const [recentEntrate, setRecentEntrate] = useState<DepositResponse[]>([]);
-  const [recentUscite, setRecentUscite] = useState<WithdrawalResponse[]>([]);
+  const [recentEntrate, setRecentEntrate] = useState<TransactionResponse[]>([]);
+  const [recentUscite, setRecentUscite] = useState<TransactionResponse[]>([]);
 
   const [showModal, setShowModal] = useState<"entrata" | "uscita" | null>(null);
   const [formDesc, setFormDesc] = useState("");
