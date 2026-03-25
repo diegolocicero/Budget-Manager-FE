@@ -21,14 +21,8 @@
 }
 
 .chart-card {
+  position: relative;
   margin-top: 80px;
-  background: linear-gradient(
-    135deg,
-    rgba(73, 57, 121, 0.2) 0%,
-    rgba(28, 77, 141, 0.1) 100%
-  );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(189, 232, 245, 0.25);
   border-radius: 40px;
   padding: 50px 30px;
@@ -40,17 +34,42 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
   height: 650px;
+}
+
+.chart-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 40px;
+  background: linear-gradient(
+    135deg,
+    rgba(73, 57, 121, 0.2) 0%,
+    rgba(28, 77, 141, 0.1) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 0;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.chart-card:hover::before {
+  background: rgba(73, 57, 121, 0.35);
+}
+
+.chart-card:hover {
+  border-color: var(--primary);
+}
+
+.chart-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .chart-card:last-child {
   margin-bottom: 30px;
-}
-
-.chart-card:hover {
-  background-color: rgba(73, 57, 121, 0.35);
-  border-color: var(--primary);
 }
 
 .card-header {
@@ -78,13 +97,15 @@
 
 .chart-wrapper {
   position: relative;
-  height: 350px;
+    height: 420px;
   width: 100%;
   max-width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 .custom-legend {
@@ -198,12 +219,16 @@
     height: auto;
   }
 
+  .chart-card::before {
+    border-radius: 30px;
+  }
+
   .chart-card h2 {
     font-size: 1.4rem;
     letter-spacing: 3px;
   }
 
   .chart-wrapper {
-    height: 280px;
+    height: 350px;
   }
 }
