@@ -23,12 +23,19 @@ export default function Ledger() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [filter, setFilter] = useState<FilterType>(null);
+  const [search, setSearch] = useState(""); // Nuovo stato per la ricerca
   const [selected, setSelected] = useState<TransactionResponseWithType | null>(null);
 
-  const fetchTransactions = useCallback(async (p: number, f: FilterType) => {
+  // Aggiornata per accettare la stringa di ricerca
+  const fetchTransactions = useCallback(async (p: number, f: FilterType, s: string) => {
     setLoading(true);
     try {
-      const data = await TransactionAPIService.getAll({ page: p, size: PAGE_SIZE, type: f });
+      const data = await TransactionAPIService.getAll({ 
+        page: p, 
+        size: PAGE_SIZE, 
+        type: f,
+        label: s
+      });
       setTransactions(data.content);
       setTotalPages(data.totalPages);
       setTotalElements(data.totalElements);
@@ -39,16 +46,26 @@ export default function Ledger() {
     }
   }, []);
 
+  // Effetto con Debounce per la ricerca
   useEffect(() => {
-    fetchTransactions(page, filter);
-  }, [page, filter, fetchTransactions]);
+    const handler = setTimeout(() => {
+      fetchTransactions(page, filter, search);
+    }, 300); // Aspetta 300ms dall'ultima digitazione
+
+    return () => clearTimeout(handler);
+  }, [page, filter, search, fetchTransactions]);
 
   const handleFilterChange = (f: FilterType) => {
     setFilter(f);
     setPage(0);
   };
 
-  const handleRefresh = () => fetchTransactions(page, filter);
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(0); // Reset della pagina quando si cerca
+  };
+
+  const handleRefresh = () => fetchTransactions(page, filter, search);
 
   return (
     <div className="ledger-container">
@@ -56,34 +73,50 @@ export default function Ledger() {
       <div className="orb orb-2" />
 
       <div className="ledger-inner">
-
         <header className="ledger-header">
           <div className="ledger-title-group">
-            <h1 className="ledger-title">Ledger</h1>
+            <h1 className="ledger-title">Storico</h1>
             <span className="ledger-count">
               {loading ? "—" : `${totalElements} movimenti`}
             </span>
           </div>
 
-          <div className="ledger-filters">
-            <button
-              className={`filter-btn ${filter === null ? "active" : ""}`}
-              onClick={() => handleFilterChange(null)}
-            >
-              Tutti
-            </button>
-            <button
-              className={`filter-btn filter-btn--entrata ${filter === "DEPOSIT" ? "active" : ""}`}
-              onClick={() => handleFilterChange("DEPOSIT")}
-            >
-              ↑ Entrate
-            </button>
-            <button
-              className={`filter-btn filter-btn--uscita ${filter === "WITHDRAWAL" ? "active" : ""}`}
-              onClick={() => handleFilterChange("WITHDRAWAL")}
-            >
-              ↓ Uscite
-            </button>
+          <div className="ledger-controls">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Cerca per descrizione..."
+                value={search}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="ledger-search-input"
+              />
+              {search && (
+                <button className="search-clear" onClick={() => handleSearchChange("")}>
+                  ✕
+                </button>
+              )}
+            </div>
+
+            <div className="ledger-filters">
+              <button
+                className={`filter-btn ${filter === null ? "active" : ""}`}
+                onClick={() => handleFilterChange(null)}
+              >
+                Tutti
+              </button>
+              <button
+                className={`filter-btn filter-btn--entrata ${filter === "DEPOSIT" ? "active" : ""}`}
+                onClick={() => handleFilterChange("DEPOSIT")}
+              >
+                ↑ Entrate
+              </button>
+              <button
+                className={`filter-btn filter-btn--uscita ${filter === "WITHDRAWAL" ? "active" : ""}`}
+                onClick={() => handleFilterChange("WITHDRAWAL")}
+              >
+                ↓ Uscite
+              </button>
+            </div>
           </div>
         </header>
 

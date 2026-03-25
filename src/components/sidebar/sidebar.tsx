@@ -62,7 +62,7 @@ export default function Sidebar() {
             <line x1="7" y1="12" x2="13" y2="12" />
             <line x1="7" y1="15" x2="10" y2="15" />
           </svg>
-          <span className="nav-tooltip">Ledger</span>
+          <span className="nav-tooltip">Storico</span>
         </NavLink>
       </nav>
     </aside>

@@ -9,7 +9,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/home": "Home",
   "/profile": "Profilo",
   "/insight": "Insight",
-  "/ledger": "Ledger"
+  "/ledger": "Storico"
 };
 
 export default function Header() {
