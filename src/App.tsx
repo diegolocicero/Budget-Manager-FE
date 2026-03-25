@@ -15,6 +15,7 @@ import ScrollToTop from "./components/ScrollToTop.tsx";
 import { useEffect } from "react";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword.tsx";
 import ResetPassword from "./pages/resetPassword/ResetPassword.tsx";
+import Ledger from "./pages/transactionList/Ledger.tsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -58,6 +59,7 @@ function AnimatedRoutes() {
     "/home": "Home",
     "/profile": "Profilo",
     "/insight": "Insight",
+    "/ledger": "Storico"
   };
 
   useEffect(() => {
@@ -75,6 +77,7 @@ function AnimatedRoutes() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/insight" element={<Insight />} />
+        <Route path="/ledger" element={<Ledger/>}></Route>
         <Route path="/profile" element={<Profile />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

@@ -4,3 +4,7 @@ export interface TransactionResponse {
   label: string;
   createdAt: string;
 }
+
+export interface TransactionResponseWithType extends TransactionResponse {
+  type: "DEPOSIT" | "WITHDRAWAL";
+}

@@ -1,0 +1,283 @@
+.ledger-container {
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+  margin-left: 60px;
+  background: var(--background);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1.5rem 4rem;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+}
+
+
+.ledger-container .orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 12s ease-in-out infinite alternate;
+}
+
+.ledger-container .orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(73, 57, 121, 0.55) 0%, transparent 70%);
+  top: -120px;
+  left: -100px;
+  animation-duration: 14s;
+}
+
+.ledger-container .orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(28, 77, 141, 0.4) 0%, transparent 70%);
+  bottom: -80px;
+  right: -80px;
+  animation-duration: 10s;
+  animation-delay: -4s;
+}
+
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, 20px) scale(1.08); }
+}
+
+
+.ledger-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+
+.ledger-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.ledger-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.ledger-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.ledger-count {
+  font-size: 0.78rem;
+  color: rgba(201, 190, 255, 0.4);
+  letter-spacing: 0.03em;
+}
+
+
+.ledger-filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.filter-btn.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.filter-btn--entrata.active {
+  background: rgba(73, 136, 196, 0.15);
+  border-color: rgba(73, 136, 196, 0.4);
+  color: var(--primary);
+}
+
+.filter-btn--uscita.active {
+  background: rgba(73, 57, 121, 0.2);
+  border-color: rgba(73, 57, 121, 0.5);
+  color: var(--text);
+}
+
+
+.ledger-card {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+
+
+.ledger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.ledger-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.75rem;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+
+.ledger-item--clickable {
+  cursor: pointer;
+  outline: none;
+}
+
+.ledger-item--clickable:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ledger-item--clickable:focus-visible {
+  box-shadow: 0 0 0 2px rgba(73, 136, 196, 0.5);
+}
+
+.ledger-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.ledger-empty {
+  padding: 3rem;
+  text-align: center;
+  color: rgba(201, 190, 255, 0.3);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+
+.ledger-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.page-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.page-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 0.78rem;
+  color: rgba(201, 190, 255, 0.45);
+  letter-spacing: 0.04em;
+  min-width: 60px;
+  text-align: center;
+}
+
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.skeleton-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  gap: 0.75rem;
+}
+
+.skeleton-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.skeleton-label { width: 120px; height: 13px; margin-bottom: 5px; }
+.skeleton-date { width: 60px; height: 10px; }
+.skeleton-amount-list { width: 70px; height: 14px; margin-left: auto; }
+
+
+@media (max-width: 560px) {
+  .ledger-container {
+    margin-left: 0;
+    padding-bottom: 80px;
+  }
+
+  .ledger-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ledger-filters {
+    width: 100%;
+  }
+
+  .filter-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
